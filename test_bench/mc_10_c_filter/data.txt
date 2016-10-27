@@ -1,0 +1,19 @@
+{
+  mem_data[0] = 0x00;		 //var0
+  mem_data[1] = 10;	  	    //var1
+  mem_data[2] = 20;			//var2
+  mem_data[3] = 30;			//var3
+  mem_data[4] = 40;			//var4
+  mem_data[5] = 50;			//var5
+  mem_data[6] = 0;
+  mem_data[7] = 0;
+  mem_data[8] = 0;
+  mem_data[9] = 0;
+  mem_data[10] = 20;		//constant0;
+  mem_data[11] = 5;			//constant1;
+  mem_data[12] = 16;		//constant2;
+  mem_data[13] = 5;			//constant3;
+  mem_data[14] = 255;		//constant4;
+  mem_data[15]=  0;
+
+}

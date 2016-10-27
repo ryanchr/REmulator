@@ -1,0 +1,219 @@
+{
+  C_REGISTER_CONTEXT(context);
+	
+  /*context[0]: transfer constant data to SGRF*/
+  {
+    C_CONTEXT(0);
+
+    {
+      C_CREATE_RCA(5,0);     // num_inport = 7,  num_outport = 3;
+
+      {
+        C_PORT;
+
+        inport[0] = 0;  inname[0] = "constant0";
+        inport[1] = 1;  inname[1] = "constant1";
+        inport[2] = 2;  inname[2] = "constant2";
+        inport[3] = 3;  inname[3] = "constant3";
+        inport[4] = 4;  inname[4] = "constant4";
+      }
+
+      {
+        C_RCA;
+
+        {
+          C_RC(0,0);
+          in_global[0] = GLOBAL(0); 
+		  des[0] = 0x04;
+		  addr_des[0] = 0x00;
+
+          alu = BYPASS0;
+        }
+        {
+          C_RC(0,1);
+          in_global[0] = GLOBAL(1); 
+		  des[0] = 0x04;
+		  addr_des[0] = 0x01;
+			
+          alu = BYPASS0;
+        }
+		{
+          C_RC(0,2);
+          in_global[0] = GLOBAL(2); 
+		  des[0] = 0x04;
+		  addr_des[0] = 0x02;
+			
+          alu = BYPASS0;
+        }
+		{
+          C_RC(0,3);
+          in_global[0] = GLOBAL(3); 
+		  des[0] = 0x04;
+		  addr_des[0] = 0x03;
+			
+          alu = BYPASS0;
+        }
+        {
+          C_RC(1,0);
+          in_global[0] = GLOBAL(4); 
+		  des[0] = 0x04;
+		  addr_des[0] = 0x04;
+			
+          alu = BYPASS0;
+        }
+      }
+    }
+
+    {
+      C_CREATE_DATA(1);
+
+      {
+        C_DATA(0);
+
+        in[0] = 0x0a;  in[1] = 0x0b;
+        in[2] = 0x0c;  in[3] = 0x0d;
+        in[4] = 0x0e;  
+      }
+    }
+  }
+	/* context[1]: computing of agrithm */
+	{
+    C_CONTEXT(1);
+
+    {
+      C_CREATE_RCA(6,0);     // num_inport = 7,  num_outport = 3;
+
+      {
+        C_PORT;
+
+        inport[0] = 0;  inname[0] = "var0";
+        inport[1] = 1;  inname[1] = "var1";
+        inport[2] = 2;  inname[2] = "var2";
+        inport[3] = 3;  inname[3] = "var3";
+        inport[4] = 4;  inname[4] = "var4";
+      	inport[5] = 5;  inname[5] = "var5";
+   
+      }
+
+      {
+        C_RCA;
+
+        {
+          C_RC(0,0);
+          in_global[0] = GLOBAL(2); 
+		  in_global[1] = GLOBAL(3); 
+
+          alu = ADD;
+        }
+        {
+          C_RC(0,1);
+          in_global[0] = GLOBAL(1);   
+		  in_global[1] = GLOBAL(4); 
+			
+          alu = ADD;
+        }
+        {
+          C_RC(1,0);
+          src[0] = 0x04;
+		  addr_src[0] = 0x00;		
+		  in_local[1] = LOCAL(0); 
+				
+          alu = MUL;
+        }
+		{
+          C_RC(1,1);
+          src[0] = 0x04;
+		  addr_src[0] = 0x01;		
+		  in_local[1] = LOCAL(1); 
+				
+          alu = MUL;
+        }
+		{
+          C_RC(2,0);
+          in_local[0] = LOCAL(0); 
+		  in_local[1] = LOCAL(1); 
+				
+          alu = SUB;
+        }
+		{
+          C_RC(2,1);
+          in_global[0] = GLOBAL(0); 
+		  in_global[1] = GLOBAL(5); 
+				
+          alu = ADD;
+        }
+		{
+          C_RC(3,0);
+          in_local[0] = LOCAL(0); 
+		  in_local[1] = LOCAL(1); 
+		  des[0] = 0x00;  //store in DRF0
+		  addr_des[0] = 0x00;
+			
+          alu = ADD;
+        }	       
+      }
+    }
+
+    {
+      C_CREATE_DATA(1);
+
+      {
+        C_DATA(0);
+
+        in[0] = 0x00;  in[1] = 0x01;
+        in[2] = 0x02;  in[3] = 0x03;
+        in[4] = 0x04;  in[5] = 0x05;
+      }
+    }
+  }
+	/* context[2]: computing of agrithm */
+	{
+    C_CONTEXT(2);
+
+    {
+      C_CREATE_RCA(0,1);     // num_inport = 7,  num_outport = 3;
+      
+      {
+        C_PORT;
+        outport[0] = 0;  outname[0] = "output";   
+      }      
+
+      {
+        C_RCA;
+
+        {
+          C_RC(0,0);
+          src[0] = 0x04;    //from sgrf
+		  addr_src[0] = 0x02; 
+		  src[1] = 0x00;		//from drf0
+		  addr_src[1] = 0x00;
+			
+          alu = ADD;
+        }
+		{
+          C_RC(1,0);
+		  in_local[0] = LOCAL(0);		
+	  	  src[1] = 0x04;    //from sgrf
+		  addr_src[1] = 0x03; 
+			
+          alu = LSR;
+        }
+       	       
+      }
+	  {
+			C_OUTPUT;
+			output[0] = RC(1,0);
+	   }
+    }
+	
+    {
+      C_CREATE_DATA(1);
+
+      {
+        C_DATA(0);
+				out[0] = 0x0f;
+      }
+    }
+    
+  }
+}
