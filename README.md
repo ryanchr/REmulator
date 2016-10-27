@@ -6,15 +6,15 @@ This project is meant to create a SystemC Simulator of a 2D systolic array consi
 
 Set up matlab lib
 
-* required matlab lib files: libeng．lib、libmx．lib、libmat.lib, make sure to include these files in your makefile
+*required matlab lib files: libeng．lib、libmx．lib、libmat.lib, make sure to include these files in your makefile
 
-* any new cpp file should include engine.h file
+*any new cpp file should include engine.h file
 
 Set up flex&bison
 
-* install GNUWIN32 and flex&bison
+*install GNUWIN32 and flex&bison
 
-* compile flex and yacc files:
+*compile flex and yacc files:
 
     flex -o../src/config/config.lex.cpp ../src/config/config.lex
 
